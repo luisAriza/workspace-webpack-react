@@ -1,10 +1,14 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist/"),
     filename: "bundle.js",
+  },
+  resolve: {
+    extensions: [".js", ".jsx"],
   },
   devServer: {
     static: {
@@ -13,9 +17,12 @@ module.exports = {
     compress: true,
     port: 8060,
   },
-  resolve: {
-    extensions: [".js", ".jsx"],
-  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+      filename: "./index.html",
+    }),
+  ],
   module: {
     rules: [
       {
@@ -24,6 +31,14 @@ module.exports = {
         use: {
           loader: "babel-loader",
         },
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+          },
+        ],
       },
     ],
   },
